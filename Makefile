@@ -9,3 +9,5 @@ tidy:
 	go mod tidy
 goget:
 	go get
+push:
+	git add . && git commit -am "updated" && git push

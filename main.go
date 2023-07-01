@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
+	"github.com/spf13/viper"
 
 	"github.com/sutin1234/go-hexagonal/handler"
 	"github.com/sutin1234/go-hexagonal/repository"
@@ -15,17 +17,26 @@ import (
 
 func main() {
 
-	db, err := sqlx.Open("mysql", "root:password@/go_db")
+	initConfig()
+	dsn := fmt.Sprintf("%v:%v@/%v",
+		viper.GetString("db.username"),
+		viper.GetString("db.password"),
+		// viper.GetString("db.host"),
+		// viper.GetString("db.port"),
+		viper.GetString("db.database"),
+	)
+
+	db, err := sqlx.Open(viper.GetString("db.driver"), dsn)
 	if err != nil {
 		panic(err)
 	}
 
 	customerRepo := repository.NewCustomerRepositoryDB(db)
-	_ = customerRepo
+	// _ = customerRepo
 	// Mock
-	customerRepositoryMock := repository.NewCustomerRepositoryMock()
-	customerService := service.NewCustomerService(customerRepositoryMock)
-	// customerService := service.NewCustomerService(customerRepo)
+	// customerRepositoryMock := repository.NewCustomerRepositoryMock()
+	// customerService := service.NewCustomerService(customerRepositoryMock)
+	customerService := service.NewCustomerService(customerRepo)
 	customerHandle := handler.NewCustomerHandle(customerService)
 
 	// customers, err := customerRepo.GetAll()
@@ -42,17 +53,17 @@ func main() {
 
 	// servcies
 
-	customers, err := customerService.GetCustomers()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("customers Resp %v", customers)
+	// customers, err := customerService.GetCustomers()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Printf("customers Resp %v", customers)
 
-	customer, err := customerService.GetCustomer(1)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("customer Resp %v", customer)
+	// customer, err := customerService.GetCustomer(1)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Printf("customer Resp %v", customer)
 
 	// Router
 
@@ -61,4 +72,17 @@ func main() {
 	router.HandleFunc("/customers", customerHandle.GetCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customers/{cusId:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
 	http.ListenAndServe(":8081", router)
+}
+
+func initConfig() {
+	viper.SetConfigName("config.yaml")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
 }

@@ -1,0 +1,10 @@
+app:
+  port: 8081
+
+db:
+  driver: "mysql"
+  port: 3306
+  host: "http://go_db"
+  username: root
+  password: password
+  database: "go_db"

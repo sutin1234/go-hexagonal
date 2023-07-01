@@ -37,6 +37,7 @@ func (c customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	customer, err := c.cusRepo.GetById(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			logs.Error(err)
 			return nil, errs.NewNotFoundError("customer not found 777")
 		}
 		return nil, errs.NewUnExpectedError()

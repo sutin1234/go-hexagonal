@@ -34,10 +34,8 @@ func Debug(message string, fields ...zap.Field) {
 func Error(message interface{}, fields ...zap.Field) {
 	switch v := message.(type) {
 	case error:
-		log.Debug(v.Error(), fields...)
+		log.Error(v.Error(), fields...)
 	case string:
-		log.Debug(v, fields...)
-	default:
-		fmt.Printf("default %v\n", v)
+		log.Error(v, fields...)
 	}
 }

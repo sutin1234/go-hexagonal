@@ -2,9 +2,9 @@ package service
 
 import (
 	"database/sql"
-	"errors"
-	"log"
 
+	"github.com/sutin1234/go-hexagonal/errs"
+	"github.com/sutin1234/go-hexagonal/logs"
 	"github.com/sutin1234/go-hexagonal/repository"
 )
 
@@ -19,7 +19,8 @@ func NewCustomerService(cusRepo repository.CustomerRepository) customerService {
 func (c customerService) GetCustomers() ([]CustomerResponse, error) {
 	customers, err := c.cusRepo.GetAll()
 	if err != nil {
-		log.Println(err)
+		logs.Error(err)
+		return nil, err
 	}
 	customerResposes := []CustomerResponse{}
 	for _, customer := range customers {
@@ -36,11 +37,11 @@ func (c customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	customer, err := c.cusRepo.GetById(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, errors.New("record not found")
+			return nil, errs.NewNotFoundError("customer not found 777")
 		}
-		log.Println(err)
-		return nil, err
+		return nil, errs.NewUnExpectedError()
 	}
+
 	cusResp := CustomerResponse{
 		CustomerID: customer.CustomerID,
 		Name:       customer.Name,

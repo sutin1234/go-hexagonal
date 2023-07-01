@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/sutin1234/go-hexagonal/handler"
+	"github.com/sutin1234/go-hexagonal/logs"
 	"github.com/sutin1234/go-hexagonal/repository"
 	"github.com/sutin1234/go-hexagonal/service"
 )
@@ -70,8 +71,11 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/customers", customerHandle.GetCustomers).Methods(http.MethodGet)
-	router.HandleFunc("/customers/{cusId:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
+	router.HandleFunc("/customer/{id:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
+	// fmt.Printf("Application StartAndServe at %v:%v\n", viper.GetString("app.host"), viper.GetString("app.port"))
+	logs.Info("Application StartAndServe at " + viper.GetString("app.host") + ":" + viper.GetString("app.port"))
 	http.ListenAndServe(":8081", router)
+
 }
 
 func initConfig() {
@@ -85,4 +89,5 @@ func initConfig() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("initConfig Loaded")
 }

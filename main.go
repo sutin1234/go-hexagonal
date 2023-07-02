@@ -52,7 +52,7 @@ func main() {
 	// }
 	// fmt.Printf("customer %v", customer)
 
-	// servcies
+	// services
 
 	// customers, err := customerService.GetCustomers()
 	// if err != nil {

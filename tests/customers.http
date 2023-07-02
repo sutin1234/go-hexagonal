@@ -1,0 +1,6 @@
+
+### test getCustomer all
+GET {{host}}:{{port}}/customers
+
+### test getustomer by cusID = 1
+GET {{host}}:{{port}}/customer/1

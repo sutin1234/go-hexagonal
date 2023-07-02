@@ -74,7 +74,10 @@ func main() {
 	router.HandleFunc("/customer/{id:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
 	// fmt.Printf("Application StartAndServe at %v:%v\n", viper.GetString("app.host"), viper.GetString("app.port"))
 	logs.Info("Application StartAndServe at " + viper.GetString("app.host") + ":" + viper.GetString("app.port"))
-	http.ListenAndServe(":8081", router)
+	err = http.ListenAndServe(":8081", router)
+	if err != nil {
+		panic(err)
+	}
 
 }
 
@@ -89,5 +92,4 @@ func initConfig() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("initConfig Loaded")
 }

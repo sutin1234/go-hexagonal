@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/sutin1234/go-hexagonal/errs"
 	"github.com/sutin1234/go-hexagonal/logs"
 	"github.com/sutin1234/go-hexagonal/repository"
@@ -18,8 +17,6 @@ func NewAccountService(accRepo repository.AccountRepository) AccountService {
 }
 
 func (s accountService) NewAccount(customerID int, request NewAccountRequest) (*AccountResponse, error) {
-	fmt.Printf("request accountType: %v amount: %v\n", request.AccountType, request.Amount)
-	//Validate
 	if request.Amount < 5000 {
 		return nil, errs.NewValidationError("amount at least 5,000")
 	}

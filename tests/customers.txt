@@ -1,0 +1,11 @@
+create table customers
+(
+    customer_id   int auto_increment comment 'Primary Key'
+        primary key,
+    name          varchar(255) null,
+    date_of_birth varchar(255) null,
+    city          varchar(255) null,
+    zipcode       varchar(255) null,
+    status        varchar(255) null
+);
+

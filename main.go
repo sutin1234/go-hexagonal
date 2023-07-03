@@ -22,8 +22,6 @@ func main() {
 	dsn := fmt.Sprintf("%v:%v@/%v",
 		viper.GetString("db.username"),
 		viper.GetString("db.password"),
-		// viper.GetString("db.host"),
-		// viper.GetString("db.port"),
 		viper.GetString("db.database"),
 	)
 

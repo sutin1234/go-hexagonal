@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/sutin1234/go-hexagonal/errs"
 	"github.com/sutin1234/go-hexagonal/service"
 	"net/http"
@@ -29,7 +28,7 @@ func (h accountHandler) NewAccount(w http.ResponseWriter, r *http.Request) {
 
 	request := service.NewAccountRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
-	fmt.Printf("request: %v body: %v\n", request, r.Body)
+
 	if err != nil {
 		handleError(w, errs.NewValidationError("request body incorrect format"))
 		return

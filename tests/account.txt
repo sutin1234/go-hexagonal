@@ -1,0 +1,11 @@
+create table accounts
+(
+    customer_id  int          null,
+    opening_date varchar(255) null,
+    account_type varchar(255) null,
+    amount       float        null,
+    status       int          null,
+    account_id   int auto_increment
+        primary key
+);
+

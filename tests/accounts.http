@@ -1,8 +1,11 @@
-### test post account
-POST {{host}}:{{port}}/customers/1/accounts
+### test post account from customerID
+POST {{host}}:{{port}}/customers/2/accounts
 Content-Type: application/json
 
 {
-  "AccountType": "checking",
-  "Amount": 5000
+  "account_type": "saving",
+  "amount": 5000
 }
+
+### test get account/customerID
+GET {{host}}:{{port}}/customers/2/accounts

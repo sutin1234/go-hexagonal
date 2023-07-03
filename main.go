@@ -72,9 +72,9 @@ func main() {
 
 	router.HandleFunc("/customers", customerHandle.GetCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customer/{id:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
-	// fmt.Printf("Application StartAndServe at %v:%v\n", viper.GetString("app.host"), viper.GetString("app.port"))
+
 	logs.Info("Application StartAndServe at " + viper.GetString("app.host") + ":" + viper.GetString("app.port"))
-	err = http.ListenAndServe(":8081", router)
+	err = http.ListenAndServe(":"+viper.GetString("db.port"), router)
 	if err != nil {
 		panic(err)
 	}

@@ -16,4 +16,4 @@ portainer:
 build:
 	go build -o bin/hello
 run:
-	go run main.go
+	air

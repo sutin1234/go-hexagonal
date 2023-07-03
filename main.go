@@ -40,6 +40,10 @@ func main() {
 	customerService := service.NewCustomerService(customerRepo)
 	customerHandle := handler.NewCustomerHandle(customerService)
 
+	accountRepositoryDB := repository.NewAccountRepository(db)
+	accountService := service.NewAccountService(accountRepositoryDB)
+	accountHandler := handler.NewAccountHandler(accountService)
+
 	// customers, err := customerRepo.GetAll()
 	// if err != nil {
 	// 	panic(err)
@@ -72,6 +76,9 @@ func main() {
 
 	router.HandleFunc("/customers", customerHandle.GetCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customer/{id:[0-9]+}", customerHandle.GetCustomer).Methods(http.MethodGet)
+
+	router.HandleFunc("/customers/{customerID:[0-9]+}/accounts", accountHandler.GetAccounts).Methods(http.MethodGet)
+	router.HandleFunc("/customers/{customerID:[0-9]+}/accounts", accountHandler.NewAccount).Methods(http.MethodPost)
 
 	logs.Info("Application StartAndServe at " + viper.GetString("app.host") + ":" + viper.GetString("app.port"))
 	err = http.ListenAndServe(":"+viper.GetString("app.port"), router)

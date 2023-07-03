@@ -12,7 +12,7 @@ func NewCustomerRepositoryDB(db *sqlx.DB) customerRepositoryDB {
 
 func (r customerRepositoryDB) GetAll() ([]Customer, error) {
 	customers := []Customer{}
-	query := " select * from customers"
+	query := "select * from customers"
 	err := r.db.Select(&customers, query)
 	if err != nil {
 		return nil, err
